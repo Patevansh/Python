@@ -2,7 +2,7 @@ class User:
     def __init__(self):
         self.en()
     def en(self):
-        na=input("Enter your name:")
+        self.na=input("Enter your name:")
         if self.na==a.name:
             a.app()
         elif self.na==b.name:
