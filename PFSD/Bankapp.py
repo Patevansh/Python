@@ -53,7 +53,7 @@ class Bank:
         elif n==3:
             self.TransferAmount()
         elif n==4:
-            exit
+            return
         self.menu()
 
     def ChangePin(self):
