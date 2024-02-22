@@ -24,8 +24,8 @@ def reg():
     name=request.form["name"]
     email=request.form["email"]
     password=request.form["password"]
-    user=user(name,email,password)
-    data.update({email:user})
+    user1=user(name,email,password)
+    data.update({email:user1})
     return redirect("/login")
 
 @app.route("/signin",methods=["post"])
