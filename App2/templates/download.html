@@ -1,0 +1,19 @@
+<html>
+    <head>
+        <title>
+            download
+        </title>
+    </head>
+    <body>
+        <h1>download</h1>
+        {%for i in data%}
+            <h1>{{i}}</h1>
+        {% endfor %}
+        <form action="/getdata" method="post" enctype="multipart/form-data">
+            <input type="txt" name="name">
+            <br>
+            <input type="submit" value="download">
+            
+        </form>
+    </body>
+</html>
