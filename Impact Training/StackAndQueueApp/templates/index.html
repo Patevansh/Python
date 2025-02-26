@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Stack & Queue</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+        }
+        .box {
+            border: 2px solid black;
+            padding: 20px;
+            width: 300px;
+            border-radius: 10px;
+            position: relative;
+            min-height: 250px;
+            overflow: hidden;
+            background-color: #f8f8f8;
+        }
+        button {
+            margin: 5px;
+            padding: 8px;
+            cursor: pointer;
+        }
+        .stack-container, .queue-container {
+            list-style: none;
+            padding: 0;
+            min-height: 150px;
+            margin: 20px auto;
+            position: relative;
+        }
+        .stack-container li, .queue-container li {
+            background-color: lightblue;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            text-align: center;
+            font-weight: bold;
+        }
+        .push-animation {
+            transform: translateY(-20px);
+            opacity: 0;
+            animation: pushIn 0.3s forwards;
+        }
+        .pop-animation {
+            animation: popOut 0.3s forwards;
+        }
+        @keyframes pushIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes popOut {
+            from { transform: translateY(0); opacity: 1; }
+            to { transform: translateY(-20px); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Animated Stack and Queue</h2>
+    <div class="container">
+        <div class="box">
+            <h3>Stack</h3>
+            <input type="text" id="stack-input" placeholder="Enter value">
+            <br>
+            <button onclick="performOperation('stack', 'push')">Push</button>
+            <button onclick="performOperation('stack', 'pop')">Pop</button>
+            <button onclick="performOperation('stack', 'peek')">Peek</button>
+            <button onclick="performOperation('stack', 'display')">Display</button>
+            <ul class="stack-container" id="stack-display"></ul>
+        </div>
+
+        <div class="box">
+            <h3>Queue</h3>
+            <input type="text" id="queue-input" placeholder="Enter value">
+            <br>
+            <button onclick="performOperation('queue', 'enqueue')">Enqueue</button>
+            <button onclick="performOperation('queue', 'dequeue')">Dequeue</button>
+            <button onclick="performOperation('queue', 'front')">Front</button>
+            <button onclick="performOperation('queue', 'display')">Display</button>
+            <ul class="queue-container" id="queue-display"></ul>
+        </div>
+    </div>
+
+    <script>
+        async function performOperation(type, action) {
+            const item = document.getElementById(type + "-input").value;
+            const response = await fetch(`/${type}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ action, item }),
+            });
+            const data = await response.json();
+            
+            updateUI(type, data[type], action);
+        }
+
+        function updateUI(type, elements, action) {
+            const container = document.getElementById(type + "-display");
+            container.innerHTML = ""; 
+
+            elements.forEach((item, index) => {
+                let listItem = document.createElement("li");
+                listItem.innerText = item;
+
+                if (action === "push" || action === "enqueue") {
+                    if (index === elements.length - 1) {
+                        listItem.classList.add("push-animation");
+                    }
+                }
+
+                container.appendChild(listItem);
+            });
+            if (action === "pop" || action === "dequeue") {
+                if (container.children.length > 0) {
+                    container.children[0].classList.add("pop-animation");
+                    setTimeout(() => {
+                        if (container.children.length > 0) {
+                            container.children[0].remove();
+                        }
+                    }, 300);
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>
