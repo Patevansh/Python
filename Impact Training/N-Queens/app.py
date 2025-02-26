@@ -39,19 +39,31 @@ def solve_n_queens(n):
     n_queens(board, 0)
     return solutions
 
+class sol:
+
+    def __init__(self):
+        self.solutions=[]
+    def sollen(self):
+        return len(self.solutions)
+    def sol(self,n):
+        self.solutions=solve_n_queens(n)
+        return self.solutions
+    
+
 app = Flask(__name__)
+s=sol()
 @app.route('/')
 def index():
     return render_template('index.html')
 
 @app.route('/l/<int:n>')
 def length(n):
-    l=len(solve_n_queens(n))
+    l=s.sollen()
     return jsonify(l)
 
 @app.route('/solve/<int:n>')
 def solve(n):
-    solutions = solve_n_queens(n)
+    solutions = s.sol(n)
     return jsonify(solutions)
 
 if __name__ == "__main__":
